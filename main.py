@@ -37,6 +37,8 @@ if __name__ == "__main__":
         zombiescreencount = 0
         zombie1x = 10
         zombie2x = width - 10
+        zombie1xspeed = 3
+        zombie2xspeed = 2
 
         
         # here variables for the game_over screen
