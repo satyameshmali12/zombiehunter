@@ -12,8 +12,8 @@ def scaleimage(name,x,y):
 def displayimage(display,name,x,y):
     display.blit(name,(x,y))
 
-def displaytext(display,text,x,y,size,color):
-    font = pygame.font.SysFont(None,size)
+def displaytext(display,text,x,y,size,color,bold,italic):
+    font = pygame.font.SysFont(None,size,bold,italic)
     text = font.render(text,True,color)
     display.blit(text,(x,y))
 
@@ -23,3 +23,7 @@ def listallthefiles(name):
     for i in range(len(dir)):
         images.append(pygame.image.load(f"{name}/{dir[i]}"))        
     return images
+
+def playmusic(name):
+    pygame.mixer.music.load(name)
+    pygame.mixer.music.play()
