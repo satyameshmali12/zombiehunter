@@ -19,6 +19,7 @@ display = pygame.display.set_mode((width,height))
 pygame.display.set_icon(pygame.image.load("sprites/back/icon.jpg"))
 clock = pygame.time.Clock()
 
+
 fps = 30
 
 # data = os.read("")
@@ -55,14 +56,22 @@ if __name__ == "__main__":
 
 
         # here varibles for the game screen
+        # the initail player will be
+        player = "sprites/ninja"
+        currentmove = "idle"
+        #  here 0 = left and 1 = right
+        direction = 1
+        playerx = 20
+        playery = height-360
+        playerxspeed = 0
+        playeryspeed = 0
+        rodespeed = 10
+        movecount = 0
 
 
 
 
         while True:
-
-            # to quit the game
-            
 
             # making the hove screen here
 
@@ -70,21 +79,17 @@ if __name__ == "__main__":
                 
                 if zombie1x<10:
                     zombie1xspeed=3
-                    # print(1)
 
                 if zombie1x>width-100:
                     zombie1xspeed=-3
-                    # print(12)
                 
                 if zombie2x<10:
                     zombie2xspeed=3
-                    # print(123)
 
                 if zombie2x>width-100:
                     zombie2xspeed=-3
-                    # print(1234)
                     
-                fps = 12
+                fps = 20
 
                 zombiescreencount,zombie1x,zombie2x,place = home(display,zombiescreencount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place)
                 
@@ -92,9 +97,13 @@ if __name__ == "__main__":
             elif place == "game_over":
                 pass
 
+            # condition while playing the game
+
             elif place == "start_game":
+
+                leaffall = False
                 leaflistlength = 0
-                playing(display)
+                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction)
             
 
             if leaffall:
@@ -119,8 +128,6 @@ if __name__ == "__main__":
                 
                 for i in range(len(removelist)):
                     leaflist.remove(leaflist[removelist[i]])
-
-                # print(leafl1
 
 
 

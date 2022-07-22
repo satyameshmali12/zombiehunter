@@ -25,6 +25,10 @@ buttony = 240
 # all the home code here👇
 
 def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place):
+    
+    # playing the music with the help of the playmusic function
+    if not pygame.mixer.music.get_busy():
+        playmusic("audio/homesound.mp3")
 
     # getting the events over here
     for e in pygame.event.get():
@@ -34,11 +38,9 @@ def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place
             pos = pygame.mouse.get_pos()
             if pos[0]>buttonx and pos[0]<buttonx+playbutton.get_width() and pos[1]>buttony and pos[1]<buttony +playbutton.get_height():
                 print("hello sir ")
+                pygame.mixer.music.stop()
                 place = "start_game"
 
-    # playing the music with the help of the playmusic function
-    if not pygame.mixer.music.get_busy():
-        playmusic("audio/homesound.mp3")
 
     # displaying the backgoround of the home screen
     displayimage(display,background,0,0)
