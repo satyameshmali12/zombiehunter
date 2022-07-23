@@ -55,11 +55,15 @@ if __name__ == "__main__":
 
 
 
+
+
         # here varibles for the game screen
+
         # the initail player will be
         player = "sprites/ninja"
         currentmove = "idle"
         #  here 0 = left and 1 = right
+        health = 100
         direction = 1
         playerx = 20
         playery = height-360
@@ -67,6 +71,14 @@ if __name__ == "__main__":
         playeryspeed = 0
         rodespeed = 10
         movecount = 0
+        jumped = False
+        throwing = False
+        throwx = 0
+        throwy = 0
+        rodedirection = 0
+
+        zombieslist = []
+        zombiecount = 1
 
 
 
@@ -93,7 +105,6 @@ if __name__ == "__main__":
 
                 zombiescreencount,zombie1x,zombie2x,place = home(display,zombiescreencount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place)
                 
-
             elif place == "game_over":
                 pass
 
@@ -101,9 +112,22 @@ if __name__ == "__main__":
 
             elif place == "start_game":
 
+                if zombiecount>len(zombieslist):
+                    obj = {
+                        "zombiex":width+random.randint(0,100),
+                        "zombiey":height-360,
+                        "currentmove":"run",
+                        "direction":0,
+                        "health":100
+                    }
+                    zombieslist.append(obj)
+
+                fps = 35
                 leaffall = False
                 leaflistlength = 0
-                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction)
+
+                # taking all the values from the playing function 
+                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist)
             
 
             if leaffall:
