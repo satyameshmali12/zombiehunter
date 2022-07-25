@@ -78,7 +78,7 @@ if __name__ == "__main__":
         rodedirection = 0
 
         zombieslist = []
-        zombiecount = 1
+        zombiecount = 2
 
 
 
@@ -112,17 +112,31 @@ if __name__ == "__main__":
 
             elif place == "start_game":
 
+                if health<1:
+                    print("you lose")
+                    # place=="home"
+
                 if zombiecount>len(zombieslist):
+                    colors = ["red","green","yellow","blue","purple"]
+                    gender = random.randint(0,1)
+                    # print(gender)
+                    gender = "male" if gender==0 else "female"
+                    # print(gender)
                     obj = {
                         "zombiex":width+random.randint(0,100),
                         "zombiey":height-360,
-                        "currentmove":"run",
+                        "currentmove":"walk",
+                        "movecount":0,
                         "direction":0,
-                        "health":100
+                        "health":100,
+                        "gender":gender,
+                        "attacking":False,
+                        "speedx":random.randint(2,3),
+                        "healthbarcolor":colors[random.randint(0,len(colors)-1)]
                     }
                     zombieslist.append(obj)
 
-                fps = 35
+                fps = 18
                 leaffall = False
                 leaflistlength = 0
 
@@ -152,6 +166,7 @@ if __name__ == "__main__":
                 
                 for i in range(len(removelist)):
                     leaflist.remove(leaflist[removelist[i]])
+                    
 
 
 

@@ -27,3 +27,6 @@ def listallthefiles(name):
 def playmusic(name):
     pygame.mixer.music.load(name)
     pygame.mixer.music.play()
+
+def drawrect(display,color,x,y,sizex,sizey):
+    pygame.draw.rect(display,color,(x,y,sizex,sizey))
