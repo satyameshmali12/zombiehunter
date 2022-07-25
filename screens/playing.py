@@ -27,23 +27,18 @@ zombiemoves = ["idle","attack","walk","dead"]
 zombiemoves2 = {}
 
 for i in range(len(zombiemoves)):
-    # print("the lj")
     obj = {
         "male":listallthefiles(f"sprites/zombie/male/{zombiemoves[i]}"),
         "female":listallthefiles(f"sprites/zombie/female/{zombiemoves[i]}")
     }
-    # print(obj)
     zombiemoves2.__setitem__(zombiemoves[i],obj)
-    # print(zombiemoves2)
-
-# print(zombiemoves2)
 
 # loading the image of the rode
 rode = pygame.image.load("sprites/ninja/rode.png")
 
 pygame.time.set_timer(pygame.USEREVENT, 20000)
 
-def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,timing,kills):
+def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills):
 
     if playerx<0 or playerx>width:
         health-=0.1
@@ -54,7 +49,6 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
         if e.type == pygame.USEREVENT: 
             zombiescount += 1
             noofthrow+=1
-            print("enhanced")
         if keys[pygame.K_s]:
             currentmove = "slide"
             if direction == 0:
@@ -75,7 +69,6 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
                 currentmove = "run"
                 direction=0
             elif e.key == pygame.K_SPACE:
-                print("pressed")
                 if not jumped:
                     currentmove = "jump"
                     if direction==0:
@@ -86,7 +79,6 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
                     jumped = True
                     
             elif e.key == pygame.K_f:
-                # print("hello world")
                 currentmove = "attack"
                 movecount = 0
 
@@ -148,20 +140,17 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
 
         if zombieslist[i]["currentmove"]=="attack":
             if zombieslist[i]["movecount"]>4:
-                print("hitted")
                 health-=0.5
 
         zombiemovecount = len(zombiemoves2[zombieslist[i]["currentmove"]][zombieslist[i]["gender"]])
         movecountupdate = 0
         if abs(zombieslist[i]["zombiex"]-playerx)<10:
-            # print("updated")
             zombieslist[i].update({
                 "currentmove":"attack",
                 "movecount":0
             })
 
         if zombieslist[i]["currentmove"]=="attack" and zombieslist[i]["movecount"]==zombiemovecount-1:
-            print("entered")
             zombieslist[i].update({
                 "currentmove":"walk",
                 "attacking":False
@@ -234,8 +223,9 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
 
     drawrect(display,"red",10,10,health*2,30)
     displaytext(display,f"{int(health)}",health+3,10,36,"blue",False,False)
-    displaytext(display,f"Timing:-{str(timing)}",400,10,50,"black",True,True)
-    displaytext(display,f"Kills:-{kills}",700,10,50,"blue",True,True)
+    displaytext(display,f"Kills:-{kills}",500,10,50,"blue",True,True)
+    displayimage(display,rode,width-250,20)
+    displaytext(display,f"{noofthrow}",width-90,20,60,"black",False,False)
 
 
     return currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills

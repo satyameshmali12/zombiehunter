@@ -1,6 +1,4 @@
-import os
 import random
-import sys
 import pygame
 from screens.game_over import game_over # importing the pygame module over here
 from screens.home import home
@@ -30,9 +28,9 @@ print(data.readlines())
 
 
 if __name__ == "__main__":
-    def gameloop():
+    def gameloop(location):
         
-        place = "home"
+        place = location
 
         # creating all the variables for creating a leaf falling effect
         leaflist = []
@@ -81,14 +79,9 @@ if __name__ == "__main__":
         throwy = 0
         noofthrow = 4
         rodedirection = 0
-        timing = 0
         kills = 0
-
         zombieslist = []
         zombiescount = 2
-
-
-
 
         while True:
 
@@ -116,30 +109,13 @@ if __name__ == "__main__":
 
                 # restarting the game
                 fps = 20
-                place,restart = game_over(display,kills,timing,place,restart)
+                place,restart = game_over(display,kills,place,restart)
                 if restart:
-                    currentmove = "idle"
-                    #  here 0 = left and 1 = right
-                    health = 100
-                    direction = 1
-                    playerx = 20
-                    playery = height-360
-                    playerxspeed = 0
-                    playeryspeed = 0
-                    rodespeed = 10
-                    movecount = 0
-                    jumped = False
-                    throwing = False
-                    throwx = 0
-                    throwy = 0
-                    noofthrow = 4
-                    rodedirection = 0
-                    # timing -= pygame.time.get_ticks()
-                    kills = 0
+                    gameloop("start_game")
 
                     place = "start_game"
                 if place=="home":
-                    gameloop()
+                    gameloop("home")
 
 
             # condition while playing the game
@@ -175,7 +151,7 @@ if __name__ == "__main__":
                 leaflistlength = 0
 
                 # taking all the values from the playing function 
-                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,timing,kills)
+                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills)
             
 
             if leaffall:
@@ -211,5 +187,5 @@ if __name__ == "__main__":
 
 
 
-    gameloop()
+    gameloop("home")
 

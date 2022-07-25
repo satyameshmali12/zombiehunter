@@ -17,8 +17,10 @@ exitbutton = pygame.transform.scale(pygame.image.load("sprites/gui/exit (2).png"
 exitbuttonx = 750
 exitbuttony = height/2+60
 
+background = pygame.transform.scale(pygame.image.load("sprites/back/background.webp"),(width,height))
 
-def game_over(display,score,timing,place,restart):
+
+def game_over(display,score,place,restart):
 
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -38,9 +40,9 @@ def game_over(display,score,timing,place,restart):
                 sys.exit()
 
     display.fill("purple")
-    displaytext(display,"Well Played",width/2-homebutton.get_width()-40,100,70,"black",True,True)
+    displayimage(display,background,0,0)
+    displaytext(display,"Well Played" if score>0 else "Good",width/2-homebutton.get_width()-40,100,70,"black",True,True)
     displaytext(display,f"No of kills:- {score}",500,height/2-50,40,"black",True,False)
-    displaytext(display,f"Time Taken:- {timing}",500,height/2,40,"black",True,False)
 
     displayimage(display,homebutton,homebuttonx,homebuttony)
     displayimage(display,reloadbutton,reloadbuttonx,reloadbuttony)
