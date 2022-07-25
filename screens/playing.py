@@ -1,8 +1,9 @@
 # creating the playing screen it will be further used in the main.py where the main game is running
-from dis import dis
 import pygame
 import sys
 from resources.functions import playmusic,displayimage,displaytext,listallthefiles,scaleimage,drawrect
+
+pygame.init()
 
 width = 1200
 height = 700
@@ -40,15 +41,20 @@ for i in range(len(zombiemoves)):
 # loading the image of the rode
 rode = pygame.image.load("sprites/ninja/rode.png")
 
+pygame.time.set_timer(pygame.USEREVENT, 20000)
 
-def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist):
+def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,timing,kills):
 
-    # if currentmove == "attack":
-    #     playmusic("audio/punch1.mp3")
-    # all the events while playing the game over heres
+    if playerx<0 or playerx>width:
+        health-=0.1
+
     keys = pygame.key.get_pressed()
     
     for e in pygame.event.get():
+        if e.type == pygame.USEREVENT: 
+            zombiescount += 1
+            noofthrow+=1
+            print("enhanced")
         if keys[pygame.K_s]:
             currentmove = "slide"
             if direction == 0:
@@ -80,18 +86,20 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
                     jumped = True
                     
             elif e.key == pygame.K_f:
-                print("hello world")
+                # print("hello world")
                 currentmove = "attack"
                 movecount = 0
 
             elif e.key == pygame.K_t:
                 if not throwing:
-                    currentmove="throwrode"
-                    movecount = 0
-                    throwing = True
-                    throwx = playerx
-                    throwy = playery
-                    rodedirection = direction
+                    if noofthrow>0:
+                        currentmove="throwrode"
+                        movecount = 0
+                        throwing = True
+                        throwx = playerx
+                        throwy = playery
+                        rodedirection = direction
+                        noofthrow-=1
 
         if e.type == pygame.KEYUP:
             if not jumped:
@@ -129,21 +137,24 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
     # displaying the zombies over here code below👇
     for i in range(len(zombieslist)):
 
-        
+        # If distance between zombie and player is less than 10 than the player health is reduce
+        if abs(zombieslist[i]["zombiex"]-playerx)<10 and zombieslist[i]["currentmove"]=="attack":
+            if health>0:
+                health-=0.5
 
-
-        if zombieslist[i]["zombiex"]==playerx:
-            # print("heye what's going on")
-            health-=1
+        if zombieslist[i]["zombiex"]==playerx and zombieslist[i]["currentmove"]!="dead":
+            if health>0:
+                health-=0.5
 
         if zombieslist[i]["currentmove"]=="attack":
             if zombieslist[i]["movecount"]>4:
                 print("hitted")
-                health-=1
+                health-=0.5
 
         zombiemovecount = len(zombiemoves2[zombieslist[i]["currentmove"]][zombieslist[i]["gender"]])
         movecountupdate = 0
         if abs(zombieslist[i]["zombiex"]-playerx)<10:
+            # print("updated")
             zombieslist[i].update({
                 "currentmove":"attack",
                 "movecount":0
@@ -157,6 +168,7 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
                 
             })
 
+        # displaying the zombie according to their position left or right
         if zombieslist[i]["direction"]==0:
             displayimage(display,scaleimage(pygame.transform.flip(zombiemoves2[zombieslist[i]["currentmove"]][zombieslist[i]["gender"]][zombieslist[i]["movecount"]],True,False),200,200),zombieslist[i]["zombiex"],height-350)
         else:
@@ -168,6 +180,7 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
 
         movecountupdate = 1 if zombieslist[i]["movecount"]<zombiemovecount-1 else 0
         
+        # moving the zombie in the player direction and hitting the player
         zombieslist[i].update({
             "movecount":zombieslist[i]["movecount"]+movecountupdate if movecountupdate==1  else 0,
             "zombiex":zombieslist[i]["zombiex"] + zombieslist[i]["speedx"] if zombieslist[i]["zombiex"]<playerx else zombieslist[i]["zombiex"]-zombieslist[i]["speedx"] if not zombieslist[i]["attacking"] else zombieslist[i]["zombiex"],
@@ -183,23 +196,16 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
                 throwing = False
 
         
-        # checking the zombies health and if less than or equal to 0 then it's current move is setted to the zero
-        if zombieslist[i]["health"]<=0 and zombieslist[i]["currentmove"]!="dead":
-            print("updated")
-            zombieslist[i].update({
-                "speedx":0,
-                "currentmove":"dead",
-                "movecount":0
-            })
-
-        # testing
-        if zombieslist[i]["currentmove"]=="dead":
-            print(zombieslist[i]["movecount"])
-        
-        # removing the zombie if satisfied the condition
-        if zombieslist[i]["currentmove"]=="dead" and zombieslist[i]["movecount"]>len(zombiemoves2["dead"][zombieslist[i]["gender"]])-2:
+        # checking the zombies health and if less than or equal to 0 then the zombie is removed
+        if zombieslist[i]["health"]<1:
             zombieslist.remove(zombieslist[i])
+            kills+=1
             break
+
+        if currentmove=="attack" and abs(playerx-zombieslist[i]["zombiex"])<40:
+            zombieslist[i].update({
+                "health":zombieslist[i]["health"]-5
+            })
 
 
     # displaying the character over here
@@ -224,12 +230,12 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
     playerx+=playerxspeed
     playery+=playeryspeed
 
-    # check this in a while 🌛
-
     # displaying the health bar over here
 
     drawrect(display,"red",10,10,health*2,30)
-    displaytext(display,f"{health}",health,10,30,"black",False,False)
+    displaytext(display,f"{int(health)}",health+3,10,36,"blue",False,False)
+    displaytext(display,f"Timing:-{str(timing)}",400,10,50,"black",True,True)
+    displaytext(display,f"Kills:-{kills}",700,10,50,"blue",True,True)
 
 
-    return currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist
+    return currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills

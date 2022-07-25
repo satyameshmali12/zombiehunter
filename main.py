@@ -1,10 +1,10 @@
 import os
 import random
 import sys
-import pygame # importing the pygame module over here
+import pygame
+from screens.game_over import game_over # importing the pygame module over here
 from screens.home import home
 from screens.playing import playing
-
 
 
 # initializiing the pygame
@@ -25,6 +25,9 @@ fps = 30
 # data = os.read("")
 data = open("data")
 print(data.readlines())
+
+
+
 
 if __name__ == "__main__":
     def gameloop():
@@ -52,6 +55,7 @@ if __name__ == "__main__":
 
         
         # here variables for the game_over screen
+        restart = False
 
 
 
@@ -75,10 +79,13 @@ if __name__ == "__main__":
         throwing = False
         throwx = 0
         throwy = 0
+        noofthrow = 4
         rodedirection = 0
+        timing = 0
+        kills = 0
 
         zombieslist = []
-        zombiecount = 2
+        zombiescount = 2
 
 
 
@@ -106,22 +113,49 @@ if __name__ == "__main__":
                 zombiescreencount,zombie1x,zombie2x,place = home(display,zombiescreencount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place)
                 
             elif place == "game_over":
-                pass
+
+                # restarting the game
+                fps = 20
+                place,restart = game_over(display,kills,timing,place,restart)
+                if restart:
+                    currentmove = "idle"
+                    #  here 0 = left and 1 = right
+                    health = 100
+                    direction = 1
+                    playerx = 20
+                    playery = height-360
+                    playerxspeed = 0
+                    playeryspeed = 0
+                    rodespeed = 10
+                    movecount = 0
+                    jumped = False
+                    throwing = False
+                    throwx = 0
+                    throwy = 0
+                    noofthrow = 4
+                    rodedirection = 0
+                    # timing -= pygame.time.get_ticks()
+                    kills = 0
+
+                    place = "start_game"
+                if place=="home":
+                    gameloop()
+
 
             # condition while playing the game
 
             elif place == "start_game":
 
+                timing = int(pygame.time.get_ticks()/1000-5)
+                if health<1 and currentmove=="dead" and movecount>7:
+                    place="game_over"
                 if health<1:
-                    print("you lose")
-                    # place=="home"
+                    currentmove="dead"
 
-                if zombiecount>len(zombieslist):
-                    colors = ["red","green","yellow","blue","purple"]
+                if zombiescount>len(zombieslist):
+                    colors = ["green","yellow","blue","purple","violet"]
                     gender = random.randint(0,1)
-                    # print(gender)
                     gender = "male" if gender==0 else "female"
-                    # print(gender)
                     obj = {
                         "zombiex":width+random.randint(0,100),
                         "zombiey":height-360,
@@ -141,7 +175,7 @@ if __name__ == "__main__":
                 leaflistlength = 0
 
                 # taking all the values from the playing function 
-                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist)
+                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,timing,kills)
             
 
             if leaffall:
@@ -166,7 +200,6 @@ if __name__ == "__main__":
                 
                 for i in range(len(removelist)):
                     leaflist.remove(leaflist[removelist[i]])
-                    
 
 
 

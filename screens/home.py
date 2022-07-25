@@ -41,6 +41,10 @@ def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place
                 pygame.mixer.music.stop()
                 place = "start_game"
 
+        if e.type == pygame.KEYDOWN:
+            if e.key == pygame.K_SPACE:
+                place="start_game"
+
 
     # displaying the backgoround of the home screen
     displayimage(display,background,0,0)
