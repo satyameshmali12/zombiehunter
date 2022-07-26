@@ -37,7 +37,7 @@ def drawrect(display,color,x,y,sizex,sizey):
 
 # this function is to check whether the button is pressed or not
 def checkwhetherbuttonpressed(button,buttonx,buttony,mousex,mousey,iftrue,iffalse):
-    if mousex>buttonx and mousex<buttonx+button.get_width() and mousex>buttony and mousey<buttony+button.get_height():
+    if mousex>buttonx and mousex<buttonx+button.get_width() and mousey>buttony and mousey<buttony+button.get_height():
         return iftrue
     else:
         iffalse

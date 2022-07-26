@@ -21,13 +21,13 @@ fps = 30
 
 # data = os.read("")
 data = open("data")
-print(data.readlines())
 
 
 if __name__ == "__main__":
     def gameloop(location):
         
         place = location
+        fps = 10
 
         # creating all the variables for creating a leaf falling effect
         leaflist = []
@@ -44,9 +44,6 @@ if __name__ == "__main__":
         # speed of both the zombie it will also give the directions to the zombie
         zombie1xspeed = 3
         zombie2xspeed = -3
-        playbutton = pygame.transform.scale(pygame.image.load("sprites/gui/Play (4).png"),(130,130))
-        buttonx = 550
-        buttony = 240
 
         
         # here variables for the game_over screen
@@ -183,6 +180,6 @@ if __name__ == "__main__":
                 
 
 
+    gameloop("game_over")
 
-    gameloop("start_game")
 

@@ -22,8 +22,8 @@ background = pygame.transform.scale(pygame.image.load("sprites/back/background.w
 
 def game_over(display,score,place,restart):
 
-    if not pygame.mixer.music.get_busy():
-        pygame.mixer.music.play("audio/game_over.mp3")
+    # if not pygame.mixer.music.get_busy():
+        # pygame.mixer.music.play("audio/game_over1.mp3")
 
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
@@ -32,10 +32,12 @@ def game_over(display,score,place,restart):
         if e.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             place = checkwhetherbuttonpressed(homebutton,homebuttonx,homebuttony,pos[0],pos[1],"home","game_over")
-            print(place)
+
+            # due to some errors
+            if place==None:
+                place="game_over"
+
             restart = checkwhetherbuttonpressed(reloadbutton,reloadbuttonx,reloadbuttony,pos[0],pos[1],True,False)
-            if place!="game_over":
-                break
 
             if pos[0]>exitbuttonx and pos[0]<exitbuttonx+exitbutton.get_width() and pos[1]>exitbuttony and pos[1]<exitbuttony+exitbutton.get_height():
                 sys.exit()
