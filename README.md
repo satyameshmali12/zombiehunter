@@ -69,6 +69,9 @@ keys
 - Light Weight
 - Made with pygame
 
+## Note 
+Increase the game screen fps to make it run more smooth.
+
 
 ## Contributing
 
