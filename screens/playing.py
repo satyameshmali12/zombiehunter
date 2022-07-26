@@ -1,4 +1,5 @@
 # creating the playing screen it will be further used in the main.py where the main game is running
+from numpy import place
 import pygame
 import sys
 from resources.functions import playmusic,displayimage,displaytext,listallthefiles,scaleimage,drawrect
@@ -44,6 +45,9 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
         health-=0.1
 
     keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_q] and keys[pygame.K_u] and keys[pygame.K_i] and keys[pygame.K_t]:
+        health=0
     
     for e in pygame.event.get():
         if e.type == pygame.USEREVENT: 

@@ -21,9 +21,8 @@ background = pygame.transform.scale(pygame.image.load("sprites/back/background.w
 
 
 def game_over(display,score,place,restart):
-
-    # if not pygame.mixer.music.get_busy():
-        # pygame.mixer.music.play("audio/game_over1.mp3")
+    
+    pygame.mixer.music.stop()
 
     for e in pygame.event.get():
         if e.type == pygame.QUIT:

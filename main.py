@@ -82,94 +82,106 @@ if __name__ == "__main__":
             # making the hove screen here
 
             if place == "home":
-                
-                if zombie1x<10:
-                    zombie1xspeed=3
 
-                if zombie1x>width-100:
-                    zombie1xspeed=-3
-                
-                if zombie2x<10:
-                    zombie2xspeed=3
+                try:
+                    if zombie1x<10:
+                        zombie1xspeed=3
 
-                if zombie2x>width-100:
-                    zombie2xspeed=-3
+                    if zombie1x>width-100:
+                        zombie1xspeed=-3
                     
-                fps = 20
+                    if zombie2x<10:
+                        zombie2xspeed=3
 
-                zombiescreencount,zombie1x,zombie2x,place = home(display,zombiescreencount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place)
-                
+                    if zombie2x>width-100:
+                        zombie2xspeed=-3
+                        
+                    fps = 20
+
+                    zombiescreencount,zombie1x,zombie2x,place = home(display,zombiescreencount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place)
+                except Exception as e:
+                    print("some error occured")
+                        
             elif place == "game_over":
+                try:
+                    leaffall=True
+                    # restarting the game
+                    fps = 20
+                    place,restart = game_over(display,kills,place,restart)
+                    if restart:
+                        gameloop("start_game")
 
-                # restarting the game
-                fps = 20
-                place,restart = game_over(display,kills,place,restart)
-                if restart:
-                    gameloop("start_game")
-
-                if place=="home":
-                    gameloop("home")
+                    if place=="home":
+                        gameloop("home")
+                except Exception as e:
+                    print("hey some error occurred")
+                
                     
 
 
             # condition while playing the game
 
             elif place == "start_game":
+                try:
+                    if health<1 and currentmove=="dead" and movecount>7:
+                        place="game_over"
+                        pygame.mixer.music.stop()
+                    if health<1:
+                        currentmove="dead"
 
-                if health<1 and currentmove=="dead" and movecount>7:
-                    place="game_over"
-                    pygame.mixer.music.stop()
-                if health<1:
-                    currentmove="dead"
+                    if zombiescount>len(zombieslist):
+                        colors = ["green","yellow","blue","purple","violet"]
+                        gender = random.randint(0,1)
+                        gender = "male" if gender==0 else "female"
+                        obj = {
+                            "zombiex":width+random.randint(0,100),
+                            "zombiey":height-360,
+                            "currentmove":"walk",
+                            "movecount":0,
+                            "direction":0,
+                            "health":100,
+                            "gender":gender,
+                            "attacking":False,
+                            "speedx":random.randint(2,3),
+                            "healthbarcolor":colors[random.randint(0,len(colors)-1)]
+                        }
+                        zombieslist.append(obj)
 
-                if zombiescount>len(zombieslist):
-                    colors = ["green","yellow","blue","purple","violet"]
-                    gender = random.randint(0,1)
-                    gender = "male" if gender==0 else "female"
-                    obj = {
-                        "zombiex":width+random.randint(0,100),
-                        "zombiey":height-360,
-                        "currentmove":"walk",
-                        "movecount":0,
-                        "direction":0,
-                        "health":100,
-                        "gender":gender,
-                        "attacking":False,
-                        "speedx":random.randint(2,3),
-                        "healthbarcolor":colors[random.randint(0,len(colors)-1)]
-                    }
-                    zombieslist.append(obj)
+                    fps = 18
+                    leaffall = False
+                    leaflistlength = 0
 
-                fps = 18
-                leaffall = False
-                leaflistlength = 0
-
-                # taking all the values from the playing function 
-                currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills)
+                    # taking all the values from the playing function 
+                    currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills = playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills)
+                except Exception as e:
+                    print("some error occurred")
             
 
             if leaffall:
-                removelist = []
+                try:
+                    removelist = []
 
-                if len(leaflist)<leaflistlength:
-                    x = random.randint(30,width-10)
-                    obj = {
-                        "leafx":x,
-                        "leafy":0
-                    }
-                    leaflist.append(obj)
-                
-                for i in range(len(leaflist)):
-                    pygame.draw.circle(display, lightgreen, (leaflist[i]["leafx"],leaflist[i]["leafy"]), 4)
-                    leaflist[i].update({
-                        "leafx":leaflist[i]["leafx"]+2,
-                        "leafy":leaflist[i]["leafy"]+2
-                    })
-                    if leaflist[i]["leafx"]>width or leaflist[i]["leafx"]<0 or leaflist[i]["leafy"]>height:
-                        removelist.append(i)
-                
-                for i in range(len(removelist)):
-                    leaflist.remove(leaflist[removelist[i]])
+                    if len(leaflist)<leaflistlength:
+                        x = random.randint(30,width-10)
+                        obj = {
+                            "leafx":x,
+                            "leafy":0
+                        }
+                        leaflist.append(obj)
+                    
+                    for i in range(len(leaflist)):
+                        pygame.draw.circle(display, lightgreen, (leaflist[i]["leafx"],leaflist[i]["leafy"]), 4)
+                        leaflist[i].update({
+                            "leafx":leaflist[i]["leafx"]+2,
+                            "leafy":leaflist[i]["leafy"]+2
+                        })
+                        if leaflist[i]["leafx"]>width or leaflist[i]["leafx"]<0 or leaflist[i]["leafy"]>height:
+                            removelist.append(i)
+                    
+                    for i in range(len(removelist)):
+                        leaflist.remove(leaflist[removelist[i]])
+                except Exception as e:
+                    print("some error occurred")
 
 
 
@@ -180,6 +192,6 @@ if __name__ == "__main__":
                 
 
 
-    gameloop("game_over")
+    gameloop("home")
 
 
