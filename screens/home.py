@@ -3,7 +3,8 @@ import sys
 import pygame
 
 # bringing all the function from the resources folder
-from resources.functions import loadimage,displayimage,displaytext,scaleimage,listallthefiles,playmusic
+from resources.functions import loadimage,displayimage,displaytext,scaleimage,listallthefiles,playmusic,openurl,checkwhetherbuttonpressed
+
 
 # width and height of the screen
 
@@ -19,8 +20,8 @@ zombiemrun  = listallthefiles("sprites/zombie/male/walk")
 
 # loading the images
 playbutton = pygame.transform.scale(pygame.image.load("sprites/gui/Play (4).png"),(130,130))
-buttonx = 550
-buttony = 240
+playbuttonx = 550
+playbuttony = 240
 
 # all the home code here👇
 
@@ -36,14 +37,16 @@ def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place
             sys.exit()
         if e.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            if pos[0]>buttonx and pos[0]<buttonx+playbutton.get_width() and pos[1]>buttony and pos[1]<buttony +playbutton.get_height():
-                print("hello sir ")
+
+            place = checkwhetherbuttonpressed(playbutton,playbuttonx,playbuttony,pos[0],pos[1],"start_game","home")
+            if place=="start_game":
                 pygame.mixer.music.stop()
-                place = "start_game"
 
         if e.type == pygame.KEYDOWN:
             if e.key == pygame.K_SPACE:
                 place="start_game"
+                pygame.mixer.music.stop()
+
 
 
     # displaying the backgoround of the home screen
@@ -53,19 +56,13 @@ def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place
     # displaying all the button and text on the screen and their logic below
     displaytext(display,"Zombie Hunt",250,100,140,"white",True,True)
 
-    displayimage(display,playbutton,buttonx,buttony)
-
+    displayimage(display,playbutton,playbuttonx,playbuttony)
 
     pygame.display.set_caption("Home")
-
-
-    
     
     if zombiecount == len(zombiefrun):
         zombiecount=0
 
-    # if zombie1
-    # if speed = 3
     if zombie1xspeed>0:
         displayimage(display,scaleimage(zombiefrun[zombiecount],229,250),zombie1x,height-300)
     else:

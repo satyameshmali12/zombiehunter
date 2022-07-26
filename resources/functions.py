@@ -1,5 +1,9 @@
 import pygame
 import os
+import webbrowser
+
+def openurl(url):
+    webbrowser.open_new_tab(url)  
 
 def loadimage(name):
     img = pygame.image.load(name)
@@ -30,3 +34,10 @@ def playmusic(name):
 
 def drawrect(display,color,x,y,sizex,sizey):
     pygame.draw.rect(display,color,(x,y,sizex,sizey))
+
+# this function is to check whether the button is pressed or not
+def checkwhetherbuttonpressed(button,buttonx,buttony,mousex,mousey,iftrue,iffalse):
+    if mousex>buttonx and mousex<buttonx+button.get_width() and mousex>buttony and mousey<buttony+button.get_height():
+        return iftrue
+    else:
+        iffalse

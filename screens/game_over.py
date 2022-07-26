@@ -1,7 +1,7 @@
 # creating the game_over screen it will be further used in the main.py where the main game is running
 import pygame
 import sys
-from resources.functions import displayimage,displaytext,scaleimage
+from resources.functions import displayimage,displaytext,scaleimage,checkwhetherbuttonpressed
 
 width = 1200
 height = 700
@@ -22,24 +22,27 @@ background = pygame.transform.scale(pygame.image.load("sprites/back/background.w
 
 def game_over(display,score,place,restart):
 
+    if not pygame.mixer.music.get_busy():
+        pygame.mixer.music.play("audio/game_over.mp3")
+
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             sys.exit()
 
         if e.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            if pos[0]>homebuttonx and pos[0]<homebuttonx+homebutton.get_width() and pos[1]>homebuttony and pos[1]<homebuttony+homebutton.get_height():
-                place="home"
-                print("you pressed home button")
-
-            if pos[0]>reloadbuttonx and pos[0]<reloadbuttonx+reloadbutton.get_width() and pos[1]>reloadbuttony and pos[1]<reloadbuttony+reloadbutton.get_height():
-                # print("you pressed reoloadbutton button")
-                restart=True
+            place = checkwhetherbuttonpressed(homebutton,homebuttonx,homebuttony,pos[0],pos[1],"home","game_over")
+            print(place)
+            restart = checkwhetherbuttonpressed(reloadbutton,reloadbuttonx,reloadbuttony,pos[0],pos[1],True,False)
+            if place!="game_over":
+                break
 
             if pos[0]>exitbuttonx and pos[0]<exitbuttonx+exitbutton.get_width() and pos[1]>exitbuttony and pos[1]<exitbuttony+exitbutton.get_height():
                 sys.exit()
 
-    display.fill("purple")
+    # displaying all the stuff to the gameoverscreen
+
+    display.fill("white")
     displayimage(display,background,0,0)
     displaytext(display,"Well Played" if score>0 else "Good",width/2-homebutton.get_width()-40,100,70,"black",True,True)
     displaytext(display,f"No of kills:- {score}",500,height/2-50,40,"black",True,False)

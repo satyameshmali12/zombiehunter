@@ -4,7 +4,6 @@ from screens.game_over import game_over # importing the pygame module over here
 from screens.home import home
 from screens.playing import playing
 
-
 # initializiing the pygame
 pygame.init()
 
@@ -23,8 +22,6 @@ fps = 30
 # data = os.read("")
 data = open("data")
 print(data.readlines())
-
-
 
 
 if __name__ == "__main__":
@@ -122,9 +119,9 @@ if __name__ == "__main__":
 
             elif place == "start_game":
 
-                timing = int(pygame.time.get_ticks()/1000-5)
                 if health<1 and currentmove=="dead" and movecount>7:
                     place="game_over"
+                    pygame.mixer.music.stop()
                 if health<1:
                     currentmove="dead"
 
