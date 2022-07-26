@@ -129,28 +129,40 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
     # displaying the zombies over here code below👇
     for i in range(len(zombieslist)):
 
+        # getting all the values
+        zombiex = zombieslist[i]["zombiex"]
+        zombiey = zombieslist[i]["zombiey"]
+        zombiecurrentmove = zombieslist[i]["currentmove"]
+        zombiemovementcount = zombieslist[i]["movecount"]
+        zombiedirection = zombieslist[i]["direction"]
+        zombiehealth = zombieslist[i]["health"]
+        zombiegender = zombieslist[i]["gender"]
+        zombieattacking = zombieslist[i]["attacking"]
+        zombiespeedx = zombieslist[i]["speedx"]
+        zombiehealthbarcolor = zombieslist[i]["healthbarcolor"]
+
         # If distance between zombie and player is less than 10 than the player health is reduce
-        if abs(zombieslist[i]["zombiex"]-playerx)<10 and zombieslist[i]["currentmove"]=="attack":
+        if abs(zombiex-playerx)<10 and zombiecurrentmove=="attack":
             if health>0:
                 health-=0.5
 
-        if zombieslist[i]["zombiex"]==playerx and zombieslist[i]["currentmove"]!="dead":
+        if zombiex==playerx and zombiecurrentmove!="dead":
             if health>0:
                 health-=0.5
 
-        if zombieslist[i]["currentmove"]=="attack":
+        if zombiecurrentmove=="attack":
             if zombieslist[i]["movecount"]>4:
                 health-=0.5
 
-        zombiemovecount = len(zombiemoves2[zombieslist[i]["currentmove"]][zombieslist[i]["gender"]])
+        zombiemovecount = len(zombiemoves2[zombiecurrentmove][zombiegender])
         movecountupdate = 0
-        if abs(zombieslist[i]["zombiex"]-playerx)<10:
+        if abs(zombiex-playerx)<10:
             zombieslist[i].update({
                 "currentmove":"attack",
                 "movecount":0
             })
 
-        if zombieslist[i]["currentmove"]=="attack" and zombieslist[i]["movecount"]==zombiemovecount-1:
+        if zombiecurrentmove=="attack" and zombiemovementcount==zombiemovecount-1:
             zombieslist[i].update({
                 "currentmove":"walk",
                 "attacking":False
@@ -158,26 +170,26 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
             })
 
         # displaying the zombie according to their position left or right
-        if zombieslist[i]["direction"]==0:
-            displayimage(display,scaleimage(pygame.transform.flip(zombiemoves2[zombieslist[i]["currentmove"]][zombieslist[i]["gender"]][zombieslist[i]["movecount"]],True,False),200,200),zombieslist[i]["zombiex"],height-350)
+        if zombiedirection==0:
+            displayimage(display,scaleimage(pygame.transform.flip(zombiemoves2[zombiecurrentmove][zombiegender][zombiemovementcount],True,False),200,200),zombiex,height-350)
         else:
-            displayimage(display,scaleimage(zombiemoves2[zombieslist[i]["currentmove"]][zombieslist[i]["gender"]][zombieslist[i]["movecount"]],200,200),zombieslist[i]["zombiex"],height-350)
+            displayimage(display,scaleimage(zombiemoves2[zombiecurrentmove][zombiegender][zombiemovementcount],200,200),zombiex,height-350)
 
         # displaying the zomibes health
-        drawrect(display,zombieslist[i]["healthbarcolor"],zombieslist[i]["zombiex"]+30,zombieslist[i]["zombiey"]-10,zombieslist[i]["health"],10)
+        drawrect(display,zombiehealthbarcolor,zombiex+30,zombiey-10,zombiehealth,10)
 
 
-        movecountupdate = 1 if zombieslist[i]["movecount"]<zombiemovecount-1 else 0
+        movecountupdate = 1 if zombiemovementcount<zombiemovecount-1 else 0
         
         # moving the zombie in the player direction and hitting the player
         zombieslist[i].update({
             "movecount":zombieslist[i]["movecount"]+movecountupdate if movecountupdate==1  else 0,
-            "zombiex":zombieslist[i]["zombiex"] + zombieslist[i]["speedx"] if zombieslist[i]["zombiex"]<playerx else zombieslist[i]["zombiex"]-zombieslist[i]["speedx"] if not zombieslist[i]["attacking"] else zombieslist[i]["zombiex"],
-            "direction":0 if zombieslist[i]["zombiex"]>playerx else 1
+            "zombiex":zombiex + zombiespeedx if zombiex<playerx else zombiex-zombiespeedx if not zombieattacking else zombiex,
+            "direction":0 if zombiex>playerx else 1
         })
 
         # checking whether the user has collided with the hammer or not
-        if abs(throwx-zombieslist[i]["zombiex"])<10:
+        if abs(throwx-zombiex)<10:
             if throwing:
                 zombieslist[i].update({
                     "health":0
@@ -186,12 +198,12 @@ def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed
 
         
         # checking the zombies health and if less than or equal to 0 then the zombie is removed
-        if zombieslist[i]["health"]<1:
+        if zombiehealth<1:
             zombieslist.remove(zombieslist[i])
             kills+=1
             break
 
-        if currentmove=="attack" and abs(playerx-zombieslist[i]["zombiex"])<40:
+        if currentmove=="attack" and abs(playerx-zombiex)<40:
             zombieslist[i].update({
                 "health":zombieslist[i]["health"]-5
             })

@@ -110,9 +110,9 @@ if __name__ == "__main__":
                 if restart:
                     gameloop("start_game")
 
-                    place = "start_game"
                 if place=="home":
                     gameloop("home")
+                    
 
 
             # condition while playing the game
@@ -184,5 +184,5 @@ if __name__ == "__main__":
 
 
 
-    gameloop("home")
+    gameloop("start_game")
 
