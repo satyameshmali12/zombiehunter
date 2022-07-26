@@ -20,7 +20,10 @@ exitbuttony = height/2+60
 background = pygame.transform.scale(pygame.image.load("sprites/back/background.webp"),(width,height))
 
 
+
 def game_over(display,score,place,restart):
+    
+    pygame.display.set_caption("Zombie Hunter - Game Over")
     
     pygame.mixer.music.stop()
 

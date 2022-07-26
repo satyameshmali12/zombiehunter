@@ -17,16 +17,17 @@ background = scaleimage(loadimage("sprites/back/ground.jpg"),1200,700)
 zombiefrun = listallthefiles("sprites/zombie/female/walk")
 zombiemrun  = listallthefiles("sprites/zombie/male/walk")
 
-
 # loading the images
 playbutton = pygame.transform.scale(pygame.image.load("sprites/gui/Play (4).png"),(130,130))
 playbuttonx = 550
 playbuttony = 240
 
+
 # all the home code here👇
 
 def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place):
     
+    pygame.display.set_caption("Zombie Hunter - Home")
     # playing the music with the help of the playmusic function
     if not pygame.mixer.music.get_busy():
         playmusic("audio/homesound.mp3")
@@ -39,6 +40,8 @@ def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place
             pos = pygame.mouse.get_pos()
 
             place = checkwhetherbuttonpressed(playbutton,playbuttonx,playbuttony,pos[0],pos[1],"start_game","home")
+            if place==None:
+                place="home"
             if place=="start_game":
                 pygame.mixer.music.stop()
 
@@ -57,8 +60,6 @@ def home(display,zombiecount,zombie1x,zombie2x,zombie1xspeed,zombie2xspeed,place
     displaytext(display,"Zombie Hunt",250,100,140,"white",True,True)
 
     displayimage(display,playbutton,playbuttonx,playbuttony)
-
-    pygame.display.set_caption("Home")
     
     if zombiecount == len(zombiefrun):
         zombiecount=0

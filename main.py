@@ -13,15 +13,13 @@ height = 700
 
 # creating the display over here
 display = pygame.display.set_mode((width,height))
+
 pygame.display.set_icon(pygame.image.load("sprites/back/icon.jpg"))
+
 clock = pygame.time.Clock()
 
 
 fps = 30
-
-# data = os.read("")
-data = open("data")
-
 
 if __name__ == "__main__":
     def gameloop(location):
@@ -48,9 +46,6 @@ if __name__ == "__main__":
         
         # here variables for the game_over screen
         restart = False
-
-
-
 
 
         # here varibles for the game screen

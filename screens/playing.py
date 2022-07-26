@@ -39,8 +39,11 @@ rode = pygame.image.load("sprites/ninja/rode.png")
 
 pygame.time.set_timer(pygame.USEREVENT, 20000)
 
+
 def playing(display,player,currentmove,playerx,playery,playerxspeed,playeryspeed,movecount,direction,jumped,throwing,throwx,throwy,rodedirection,health,zombieslist,zombiescount,noofthrow,kills):
 
+    pygame.display.set_caption("Zombie Hunter - Playing")
+    
     if playerx<0 or playerx>width:
         health-=0.1
 
