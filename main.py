@@ -192,6 +192,8 @@ if __name__ == "__main__":
                 
 
 
+    # running the game over here👍
+    # all done enjoy
+
+    
     gameloop("home")
-
-
